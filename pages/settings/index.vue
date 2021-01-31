@@ -47,6 +47,11 @@
               </button>
             </fieldset>
           </form>
+
+          <hr />
+          <button class="btn btn-outline-danger" @click="logout">
+            Or click here to logout.
+          </button>
         </div>
       </div>
     </div>
@@ -54,9 +59,21 @@
 </template>
 
 <script>
+const Cookie = process.client ? require("js-cookie") : undefined;
+
 export default {
   name: "settings",
   middleware: "authenticated",
+  methods: {
+    logout() {
+      // 清除本地cookie
+      Cookie.remove("user");
+      // 清除本地vuex
+      this.$store.commit("setUser", null);
+      // 重定向到首页
+      this.$router.push("/");
+    },
+  },
 };
 </script>
 
