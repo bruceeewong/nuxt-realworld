@@ -1,6 +1,7 @@
 # Realworld Nuxt
 
 > 项目改造：https://github.com/gothinkster/realworld-starter-kit
+> Demo 预览地址: http://realworld.bruski.wang/
 
 使用 Nuxt.js 实现 realworld-starter 项目
 
@@ -24,9 +25,9 @@
 
 ## 搭建框架、创建模板
 
-### 搭建NuxtJS框架
+### 搭建 NuxtJS 框架
 
-搭建NuxtJS框架，写基础html模板 引入 ionicon 等样式依赖
+搭建 NuxtJS 框架，写基础 html 模板 引入 ionicon 等样式依赖
 
 ```html
 <!DOCTYPE html>
@@ -51,7 +52,6 @@
     {{ APP }}
   </body>
 </html>
-
 ```
 
 ### 编写 layout 骨架&改写默认路由表
@@ -84,7 +84,7 @@
       </div>
     </nav>
 
-    <nuxt-child />  
+    <nuxt-child />
 
     <footer>
       <div class="container">
@@ -105,11 +105,10 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
 ```
 
-由于Nuxt默认根据目录结构生成路由表，需要自定义控制，创建 `nuxt.config.js`
+由于 Nuxt 默认根据目录结构生成路由表，需要自定义控制，创建 `nuxt.config.js`
 
 ```js
 /**
@@ -145,45 +144,45 @@ module.exports = {
 
 ### 登录/注册模板
 
-包含表单、登录/注册跳转link，错误信息提示。`a`标签改造为`nuxt-link`标签。
+包含表单、登录/注册跳转 link，错误信息提示。`a`标签改造为`nuxt-link`标签。
 
 ```html
-  <div class="auth-page">
-    <div class="container page">
-      <div class="row">
-        <div class="col-md-6 offset-md-3 col-xs-12">
-          <h1 class="text-xs-center">Sign in</h1>
-          <p class="text-xs-center">
-            <nuxt-link to="/register">Need an account?</nuxt-link>
-          </p>
+<div class="auth-page">
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 col-xs-12">
+        <h1 class="text-xs-center">Sign in</h1>
+        <p class="text-xs-center">
+          <nuxt-link to="/register">Need an account?</nuxt-link>
+        </p>
 
-          <ul class="error-messages">
-            <li>That email is already taken</li>
-          </ul>
+        <ul class="error-messages">
+          <li>That email is already taken</li>
+        </ul>
 
-          <form>
-            <fieldset class="form-group">
-              <input
-                class="form-control form-control-lg"
-                type="text"
-                placeholder="Email"
-              />
-            </fieldset>
-            <fieldset class="form-group">
-              <input
-                class="form-control form-control-lg"
-                type="password"
-                placeholder="Password"
-              />
-            </fieldset>
-            <button class="btn btn-lg btn-primary pull-xs-right">
-              Sign in
-            </button>
-          </form>
-        </div>
+        <form>
+          <fieldset class="form-group">
+            <input
+              class="form-control form-control-lg"
+              type="text"
+              placeholder="Email"
+            />
+          </fieldset>
+          <fieldset class="form-group">
+            <input
+              class="form-control form-control-lg"
+              type="password"
+              placeholder="Password"
+            />
+          </fieldset>
+          <button class="btn btn-lg btn-primary pull-xs-right">
+            Sign in
+          </button>
+        </form>
       </div>
     </div>
   </div>
+</div>
 ```
 
 ### 导入设置、文章页
@@ -192,7 +191,7 @@ module.exports = {
 
 ### 调整所有的超链接标签
 
-改所有的站内跳转的`a`标签为`nuxt-link`标签，切为nuxt路由。
+改所有的站内跳转的`a`标签为`nuxt-link`标签，切为 nuxt 路由。
 
 ## 同构渲染的用户登录态处理
 
@@ -200,11 +199,11 @@ module.exports = {
 
 服务端需要调用 Vuex 的全局模块的 `nuxtServerInit` action（通过中间件的形式），通过判断 client 端的请求头是否有 cookie `auth`，来将登录态存储到 vuex 中。
 
-### 第一步，client端将接口的数据存到vuex中
+### 第一步，client 端将接口的数据存到 vuex 中
 
 请求登录接口后，client 端需要把用户数据存到 vuex 中。此时如果刷新页面，状态就会丢失，所以我们需要做更多处理。
 
-> 这里的vuex写法与常规vue项目不同，无需导入vuex，直接按需export state / mutation ...由nuxt服务端调用; state要写成函数形式， 如
+> 这里的 vuex 写法与常规 vue 项目不同，无需导入 vuex，直接按需 export state / mutation ...由 nuxt 服务端调用; state 要写成函数形式， 如
 >
 > ```
 > export const state = () => {
@@ -214,17 +213,17 @@ module.exports = {
 > };
 > ```
 
-### 第二步，client端还需将用户token存储在cookie中
+### 第二步，client 端还需将用户 token 存储在 cookie 中
 
-此处需区分环境（client）端，我们可以使用 `process.client` / `process.server` 来区分，并决定是否加载cookie的库。
+此处需区分环境（client）端，我们可以使用 `process.client` / `process.server` 来区分，并决定是否加载 cookie 的库。
 
 ```js
 const Cookie = process.client ? require("js-cookie") : undefined;
 ```
 
-### 第三步，server端借助 vuex 的 action: `nuxtServerInit`  方法初始化登录态
+### 第三步，server 端借助 vuex 的 action: `nuxtServerInit` 方法初始化登录态
 
-借助请求头的cookie，初始化项目的vuex状态。
+借助请求头的 cookie，初始化项目的 vuex 状态。
 
 ## 处理页面访问权限
 
@@ -255,15 +254,15 @@ export default function({ store, redirect }) {
 }
 ```
 
-然后在页面组件的`middleware`参数，传入定义的中间件文件名，nuxt会自动检索根目录下`middleware`路径下的中间件（约定式），并在路由匹配到之后，组件加载前执行中间件。
+然后在页面组件的`middleware`参数，传入定义的中间件文件名，nuxt 会自动检索根目录下`middleware`路径下的中间件（约定式），并在路由匹配到之后，组件加载前执行中间件。
 
 ```vue
 // profile.vue
 <script>
 export default {
-	name: 'profile',
-	middleware: 'authenticated'
-}
+  name: "profile",
+  middleware: "authenticated",
+};
 </script>
 ```
 
@@ -271,9 +270,9 @@ export default {
 // login.vue
 <script>
 export default {
-	name: 'login',
-	middleware: 'notAuthenticated'
-}
+  name: "login",
+  middleware: "notAuthenticated",
+};
 </script>
 ```
 
@@ -281,7 +280,7 @@ export default {
 
 `/api/articles`
 
-考虑到首屏渲染，需要在Home页面的 asyncData 属性发送请求获取数据。
+考虑到首屏渲染，需要在 Home 页面的 asyncData 属性发送请求获取数据。
 
 ```js
 import { getArticles } from "@/api/article";
@@ -300,14 +299,10 @@ export default {
 
 ## 文章列表数据绑定视图
 
-还是一样的思路，a标签替换为 nuxt-link，通过 for 循环和文本插值生成批量数据
+还是一样的思路，a 标签替换为 nuxt-link，通过 for 循环和文本插值生成批量数据
 
 ```vue
-<div
-  v-for="article in articles"
-  :key="article.slug"
-  class="article-preview"
->
+<div v-for="article in articles" :key="article.slug" class="article-preview">
   <div class="article-meta">
     <nuxt-link
       :to="{
@@ -378,10 +373,10 @@ async asyncData({ query }) {
   }
 ```
 
-分页总数通过公式算出，存到computed中
+分页总数通过公式算出，存到 computed 中
 
 ```js
-{  
+{
   computed: {
     totalPage() {
       return Math.ceil(this.articlesCount / this.limit);
@@ -421,7 +416,7 @@ async asyncData({ query }) {
 注意此时的跳转，并不会刷新页面，因为 page 并不是一个响应式数据。通过 Nuxt 提供的 `watchQuery` 属性，监听查询参数，如果设置为 true，则全部监听，指定数组则为按需监听。
 
 ```js
-watchQuery: ['page']
+watchQuery: ["page"];
 ```
 
 此时热更新不生效，刷新页面即可。
@@ -430,27 +425,27 @@ watchQuery: ['page']
 
 如果首屏请求相互无依赖，可以使用`Promise.all`将异步任务包裹，异步执行
 
-串行请求（优化前），请求时间平均为2.1s
+串行请求（优化前），请求时间平均为 2.1s
 
 ```js
 const { data } = await getArticles({
-      limit,
-      offset: (page - 1) * limit,
-    });
+  limit,
+  offset: (page - 1) * limit,
+});
 
-    const { data: tagData } = await getTags();
+const { data: tagData } = await getTags();
 ```
 
-使用Promise.all并行请求（优化后），请求时间平均为1.3s
+使用 Promise.all 并行请求（优化后），请求时间平均为 1.3s
 
 ```js
 const [articleRes, tagRes] = await Promise.all([
-      getArticles({
-        limit,
-        offset: (page - 1) * limit,
-      }),
-      getTags(),
-    ]);
+  getArticles({
+    limit,
+    offset: (page - 1) * limit,
+  }),
+  getTags(),
+]);
 ```
 
 ## 首页
@@ -465,22 +460,22 @@ const [articleRes, tagRes] = await Promise.all([
 
 - 未登录时，展示 `Global Feed`，`Your Feed`禁用。登录后，`Your Feed`可选。
 
-- 点击标签，新增一个Tab，展示该标签下的动态;离开后，tab消失。
+- 点击标签，新增一个 Tab，展示该标签下的动态;离开后，tab 消失。
 
-### Tab高亮实现
+### Tab 高亮实现
 
-Tab的高亮需要匹配路由查询参数`tab`，需要做四件事情：
+Tab 的高亮需要匹配路由查询参数`tab`，需要做四件事情：
 
-1. 在asyncData中获取query.tab，并设置首页默认值，返回data: `tab`
-2. 在watchQuery中设置监听: `watchQuery: ['tab']`
-3. 在视图模板中，设置对应`nuxt-link`的动态class: `active`与`tab`关联
-4. 设置`nuxt-link`的`exact`属性为true,精确匹配路由才能避免重复高亮。
+1. 在 asyncData 中获取 query.tab，并设置首页默认值，返回 data: `tab`
+2. 在 watchQuery 中设置监听: `watchQuery: ['tab']`
+3. 在视图模板中，设置对应`nuxt-link`的动态 class: `active`与`tab`关联
+4. 设置`nuxt-link`的`exact`属性为 true,精确匹配路由才能避免重复高亮。
 
 ## Axios
 
-### 统一设置header token
+### 统一设置 header token
 
-使用axios的请求拦截器`interceptors.request`
+使用 axios 的请求拦截器`interceptors.request`
 
 ```js
 // 请求拦截器
@@ -497,13 +492,13 @@ request.interceptors.request.use(
 );
 ```
 
-那么如何获取到token呢？
+那么如何获取到 token 呢？
 
-我们的用户信息存储在`vuex.store`中，且是在`vue`app运行时才会发请求获取用户数据，如果直接导入`store`那么拿到的`user`信息必然为`null`。是不是没有办法了呢，其实[Nuxt的`插件`机制](https://nuxtjs.org/docs/2.x/directory-structure/plugins)可以帮忙。
+我们的用户信息存储在`vuex.store`中，且是在`vue`app 运行时才会发请求获取用户数据，如果直接导入`store`那么拿到的`user`信息必然为`null`。是不是没有办法了呢，其实[Nuxt 的`插件`机制](https://nuxtjs.org/docs/2.x/directory-structure/plugins)可以帮忙。
 
 > The `plugins` directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to `plugins` in `nuxt.config.js`.
 
-我们将注册一个自定插件，并借助插件的上下文参数，在vue客户端代码运行时，拿到用户信息。
+我们将注册一个自定插件，并借助插件的上下文参数，在 vue 客户端代码运行时，拿到用户信息。
 
 在根目录创建`plugins/`目录，添加`request.js`文件，写入：
 
@@ -523,7 +518,7 @@ export default ({ store }) => {
       // 请求发送前执行
       const { user } = store.state;
       if (user && user.token) {
-        config.headers.Authorization = `Token ${user.token}`;  // 统一设置token
+        config.headers.Authorization = `Token ${user.token}`; // 统一设置token
       }
       return config;
     },
@@ -544,13 +539,13 @@ module.exports = {
 };
 ```
 
-重启服务，即可享受统一的token设置（如果有的话）
+重启服务，即可享受统一的 token 设置（如果有的话）
 
 ## 日期格式化
 
 > 使用 [dayjs](https://day.js.org/): Moment.js 的 2kB 轻量化方案，拥有同样强大的 API
 
-对日期时间做特定格式，做成过滤器 filter。在nuxt中需要做成plugin，这里支持自定义格式化，模板会视图的值作为第一项参数传入，预留第二项参数来指定自定义格式。
+对日期时间做特定格式，做成过滤器 filter。在 nuxt 中需要做成 plugin，这里支持自定义格式化，模板会视图的值作为第一项参数传入，预留第二项参数来指定自定义格式。
 
 ```js
 import Vue from "vue";
@@ -562,7 +557,7 @@ Vue.filter("date", (value, format = "YYYY-MM-DD HH:mm:ss") => {
 });
 ```
 
-在config中导入插件
+在 config 中导入插件
 
 ```js
 module.exports = {
@@ -603,7 +598,7 @@ export const unfavoriteArticle = (slug) => {
 };
 ```
 
-点赞的途中，禁用该按钮的点击态，需要给每条数据加一个disabled状态。
+点赞的途中，禁用该按钮的点击态，需要给每条数据加一个 disabled 状态。
 
 ```js
 return {
@@ -649,13 +644,13 @@ async onFavorite(article) {
 
 ## 文章详情页
 
-此模块很需要SEO，所以获取文章详情的操作要放到服务端做，即在 `asyncData` 中完成。
+此模块很需要 SEO，所以获取文章详情的操作要放到服务端做，即在 `asyncData` 中完成。
 
 ### Markdown 格式支持
 
 > 第三方包：[markdown-it](https://github.com/markdown-it/markdown-it)
 
-直接使用markdown-it的API将文本内容解析成`html`文本，然后在模板使用 `v-html` 指令渲染文本。
+直接使用 markdown-it 的 API 将文本内容解析成`html`文本，然后在模板使用 `v-html` 指令渲染文本。
 
 ```js
 import MarkdownIt from "markdown-it";
@@ -664,13 +659,13 @@ const md = new MarkdownIt();
 article.body = md.render(article.body);
 ```
 
-> 问题：文本需做转义处理，如何避免XSS攻击？
+> 问题：文本需做转义处理，如何避免 XSS 攻击？
 
-### SEO设置
+### SEO 设置
 
-> Nuxt的SEO设置文档：https://nuxtjs.org/docs/2.x/features/meta-tags-seo
+> Nuxt 的 SEO 设置文档：https://nuxtjs.org/docs/2.x/features/meta-tags-seo
 
- 通过nuxt在vue模板中设置`head`方法，即可修改当前文章页的head里的`title`与`meta`标签，将文章标题设为`title`，文章内容设为`meta description`即可。
+通过 nuxt 在 vue 模板中设置`head`方法，即可修改当前文章页的 head 里的`title`与`meta`标签，将文章标题设为`title`，文章内容设为`meta description`即可。
 
 ```js
 export default {
@@ -696,7 +691,7 @@ export default {
 
 将发送评论的表单与评论列表放在一起。
 
-考虑评论对于SEO的必要性不大，可以使用客户端请求的方式拉取数据。
+考虑评论对于 SEO 的必要性不大，可以使用客户端请求的方式拉取数据。
 
 ## 打包 Nuxt.js 应用
 
@@ -715,11 +710,11 @@ export default {
 }
 ```
 
-其中`generate`是用于静态模式打包的，在这里可以忽略。执行`npm run build`，nuxt脚手架会自动将应用打包
+其中`generate`是用于静态模式打包的，在这里可以忽略。执行`npm run build`，nuxt 脚手架会自动将应用打包
 
 到`.nuxt`目录下的`dist`路径; 再接着运行`npm run start`即可以生产模式启动服务。
 
-## Nuxt部署
+## Nuxt 部署
 
 > https://nuxtjs.org/docs/2.x/deployment/deployment-pm2
 
@@ -732,9 +727,9 @@ export default {
 
 ### 自动化部署
 
-> 原理：源代码 -> Git远程仓库 -> CI/CD服务（拉取最新代码，编译构建&打包release&发布release）->发布到Web服务器
+> 原理：源代码 -> Git 远程仓库 -> CI/CD 服务（拉取最新代码，编译构建&打包 release&发布 release）->发布到 Web 服务器
 
-CI/CD服务
+CI/CD 服务
 
 - Jenkins
 - Github Actions
@@ -742,20 +737,20 @@ CI/CD服务
 - Travis CI
 - Circle CI
 
-#### Github Actions设置流程
+#### Github Actions 设置流程
 
-1. 在 github 个人设置页 `Settings/Developer settings`下，新建`Personal access tokens`，权限勾选`repo`仓库所有权限。（Token只展示一次，注意保存，不要用git来管理以免泄漏）
+1. 在 github 个人设置页 `Settings/Developer settings`下，新建`Personal access tokens`，权限勾选`repo`仓库所有权限。（Token 只展示一次，注意保存，不要用 git 来管理以免泄漏）
 2. 在项目的`settings/secrets`中添加变量，名称随意，如(Token)， 值为刚才的`Personal access tokens`的值。
-3. 在项目根目录下创建`.github/workflow`目录，创建github actions所需的CI/CD脚本，这里创建yml格式，主流程为：
-   1. 指定监听github提交事件，如只监听tag为 v* 的分支推送（发版）才构建。
+3. 在项目根目录下创建`.github/workflow`目录，创建 github actions 所需的 CI/CD 脚本，这里创建 yml 格式，主流程为：
+   1. 指定监听 github 提交事件，如只监听 tag 为 v\* 的分支推送（发版）才构建。
    2. 定制任务(jobs)，指定运行环境，指定执行步骤(steps)、
       1. 下载源码（使用`actions/checkout@master`）
-      2. 打包构建（使用`actions/setup-node@master`）执行`npm install`,  `npm run build`， `tar`打压缩包。
-      3. 发布Release，使用`actions/create-release@master`
+      2. 打包构建（使用`actions/setup-node@master`）执行`npm install`, `npm run build`， `tar`打压缩包。
+      3. 发布 Release，使用`actions/create-release@master`
       4. 上传构建结果到 Release，使用`actions/upload-release-asset@master`
       5. 部署到服务器
 
-> 完整github actions脚本
+> 完整 github actions 脚本
 
 ```
 name: Publish And Deploy Demo
@@ -825,32 +820,31 @@ jobs:
 
 普通的提交不会触发构建，只有`git tag vx.x.x`打版本后，提交才会触发。
 
-在github项目的actions tab里可以查看构建任务，并且在release记录里也可以查阅每个版本的构建产物。
+在 github 项目的 actions tab 里可以查看构建任务，并且在 release 记录里也可以查阅每个版本的构建产物。
 
 ## 踩过的坑
 
-### nuxt-link嵌套不正确，导致build之后页面报错 
+### nuxt-link 嵌套不正确，导致 build 之后页面报错
 
-写完页面后打包Build,看到报错
+写完页面后打包 Build,看到报错
 
 ```
-Failed to execute 'appendChild' on 'Node': This node type does not support this method. 
+Failed to execute 'appendChild' on 'Node': This node type does not support this method.
 ```
 
 问题分析：
 
-提示有匹配不上的`VNode`，可能是html模板嵌套不正确导致的。debug了半天，发现`nuxt-link`里面又嵌套了一层`<a>`，导致渲染报错。。。我猜因为`nuxt-link`渲染成html后nuxt这个提示也太难找问题了。
+提示有匹配不上的`VNode`，可能是 html 模板嵌套不正确导致的。debug 了半天，发现`nuxt-link`里面又嵌套了一层`<a>`，导致渲染报错。。。我猜因为`nuxt-link`渲染成 html 后 nuxt 这个提示也太难找问题了。
 
 解决办法：
 
-移除nuxt-link内部的a标签，调整结构/换成别的元素。
+移除 nuxt-link 内部的 a 标签，调整结构/换成别的元素。
 
-### 腾讯云服务器无法下载nvm脚本
+### 腾讯云服务器无法下载 nvm 脚本
 
-又是蛋疼的网络隔离问题，这里选择在能够fan qiang的本地机器下载所需的两个文件
+又是蛋疼的网络隔离问题，这里选择在能够 fan qiang 的本地机器下载所需的两个文件
 
-- nvm安装脚本： https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh (随便放置，用 `bash install.sh` 来执行此脚本)
-- nvm核心脚本：https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/nvm.sh
+- nvm 安装脚本： https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh (随便放置，用 `bash install.sh` 来执行此脚本)
+- nvm 核心脚本：https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/nvm.sh
 
-先执行安装脚本，再把nvm核心脚本放置到 `~/.nvm/` 路径下，命名为 `nvm.sh`; 然后按照安装脚本的提示，写入环境变量，即可生效。（所幸npm资源可以下载，不然心态爆炸...
-
+先执行安装脚本，再把 nvm 核心脚本放置到 `~/.nvm/` 路径下，命名为 `nvm.sh`; 然后按照安装脚本的提示，写入环境变量，即可生效。（所幸 npm 资源可以下载，不然心态爆炸...
