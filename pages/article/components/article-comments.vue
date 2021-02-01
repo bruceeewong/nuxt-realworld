@@ -10,10 +10,7 @@
           ></textarea>
         </div>
         <div class="card-footer">
-          <img
-            src="http://i.imgur.com/Qr71crq.jpg"
-            class="comment-author-img"
-          />
+          <img :src="article.author.image" class="comment-author-img" />
           <button class="btn btn-sm btn-primary">Post Comment</button>
         </div>
       </form>

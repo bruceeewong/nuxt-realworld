@@ -45,7 +45,7 @@ export const createArticle = (article) => {
   return request({
     url: "/api/articles",
     method: "POST",
-    params: {
+    data: {
       article: {
         title: article.title,
         description: article.description,
@@ -61,7 +61,7 @@ export const updateArticle = (slug, article) => {
   return request({
     url: `/api/articles/${slug}`,
     method: "PUT",
-    params: {
+    data: {
       article: {
         title: article.title, //  optional
         description: article.description, //  optional
@@ -92,7 +92,7 @@ export const createArticleComment = (slug, body) => {
   return request({
     url: `/api/articles/${slug}/comments`,
     method: "POST",
-    params: {
+    data: {
       comment: { body },
     },
   });

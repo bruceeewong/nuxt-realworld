@@ -189,11 +189,14 @@ export default {
     const limit = 10;
     const { tag, tab = "global_feed" } = query;
 
-    const getArticlesAPI =
-      store.state.user && tab === "your_feed" ? getFeedArticles : getArticles;
+    const articleParams =
+      store.state.user && tab === "your_feed"
+        ? { author: store.state.user.username }
+        : {};
 
     const [articleRes, tagRes] = await Promise.all([
-      getArticlesAPI({
+      getArticles({
+        ...articleParams,
         limit,
         offset: (page - 1) * limit,
         tag: tag,
