@@ -41,6 +41,8 @@
       :class="{
         active: article.author.favorited,
       }"
+      :disabled="article.favoriteDisabled"
+      @click="onFavorite(article)"
     >
       <i class="ion-heart"></i>
       &nbsp; Favorite Post
@@ -50,6 +52,8 @@
 </template>
 
 <script>
+import { favoriteArticle, unfavoriteArticle } from "@/api/article";
+
 export default {
   name: "ArticleMeta",
   props: {
@@ -57,6 +61,14 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      localArticle: {
+        ...this.article,
+        favoriteDisabled: false, // 点赞请求状态
+      },
+    };
   },
   // SEO
   head() {
@@ -70,6 +82,21 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    async onFavorite(article) {
+      article.favoriteDisabled = true; // 点赞禁用态
+      if (article.favorited) {
+        await unfavoriteArticle(article.slug);
+        article.favorited = false;
+        article.favoritesCount -= 1;
+      } else {
+        await favoriteArticle(article.slug);
+        article.favorited = true;
+        article.favoritesCount += 1;
+      }
+      article.favoriteDisabled = false;
+    },
   },
 };
 </script>

@@ -41,10 +41,12 @@ export default {
     const { article } = data;
 
     const md = new MarkdownIt();
-    article.body = md.render(article.body);
 
     return {
-      article,
+      article: {
+        ...article,
+        body: md.render(article.body), // markdown 解析
+      },
     };
   },
 };
