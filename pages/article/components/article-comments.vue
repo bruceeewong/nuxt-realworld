@@ -1,17 +1,21 @@
 <template>
   <div class="row">
     <div class="col-xs-12 col-md-8 offset-md-2">
-      <form class="card comment-form">
+      <form class="card comment-form" @submit.prevent="sendComment">
         <div class="card-block">
           <textarea
+            v-model="commentToSend"
             class="form-control"
             placeholder="Write a comment..."
             rows="3"
+            required
           ></textarea>
         </div>
         <div class="card-footer">
           <img :src="article.author.image" class="comment-author-img" />
-          <button class="btn btn-sm btn-primary">Post Comment</button>
+          <button type="submit" class="btn btn-sm btn-primary">
+            Post Comment
+          </button>
         </div>
       </form>
 
@@ -54,7 +58,7 @@
 </template>
 
 <script>
-import { getArticleComments } from "@/api/article";
+import { getArticleComments, createArticleComment } from "@/api/article";
 
 export default {
   name: "ArticleComments",
@@ -67,11 +71,31 @@ export default {
   data() {
     return {
       comments: [], // 评论列表
+      commentToSend: "",
     };
   },
   async mounted() {
-    const { data } = await getArticleComments(this.article.slug);
-    this.comments = data.comments;
+    this.getComments();
+  },
+  methods: {
+    async sendComment() {
+      const body = this.commentToSend.trim();
+      if (body === "") {
+        return;
+      }
+      await createArticleComment(this.article.slug, body);
+      this.resetForm();
+      this.getComments();
+    },
+
+    async getComments() {
+      const { data } = await getArticleComments(this.article.slug);
+      this.comments = data.comments;
+    },
+
+    resetForm() {
+      this.commentToSend = "";
+    },
   },
 };
 </script>

@@ -32,27 +32,47 @@
             </ul>
           </div>
 
-          <div　v-for="article in userArticle.list" :key="article.slug" class="article-preview">
+          <div
+            v-for="article in userArticle.list"
+            :key="article.slug"
+            class="article-preview"
+          >
             <div class="article-meta">
               <a href=""><img :src="article.author.image" /></a>
               <div class="info">
-                <a href="" class="author">{{article.author.username}}</a>
-                <span class="date">{{article.createdAt | date('MMM DD, YYYY')</span>
+                <a href="" class="author">{{ article.author.username }}</a>
+                <span class="date">{{
+                  article.createdAt | date("MMM DD, YYYY")
+                }}</span>
               </div>
               <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                <i class="ion-heart"></i> {{article.favoritesCount}}
+                <i class="ion-heart"></i> {{ article.favoritesCount }}
               </button>
             </div>
-            <a href="" class="preview-link">
+            <nuxt-link
+              :to="{
+                name: 'article',
+                params: {
+                  slug: article.slug,
+                },
+              }"
+              class="preview-link"
+            >
               <h1>
-                {{article.body}}
+                {{ article.body }}
               </h1>
-              <p>{{article.description}}</p>
+              <p>{{ article.description }}</p>
               <span>Read more...</span>
               <ul v-if="article.tagList.length > 0" class="tag-list">
-                <li v-for="tag in article.tagList" :key="tag" class="tag-default tag-pill tag-outline">{{tag}}</li>
+                <li
+                  v-for="tag in article.tagList"
+                  :key="tag"
+                  class="tag-default tag-pill tag-outline"
+                >
+                  {{ tag }}
+                </li>
               </ul>
-            </a>
+            </nuxt-link>
           </div>
         </div>
       </div>

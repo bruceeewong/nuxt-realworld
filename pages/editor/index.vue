@@ -76,8 +76,13 @@ export default {
         ...this.article,
         tagList: this.processTags(this.article.tagList),
       };
-      const res = await createArticle(params);
-      console.log(res);
+      const { data } = await createArticle(params);
+      this.$router.push({
+        name: "article",
+        params: {
+          slug: data.article.slug,
+        },
+      });
     },
     processTags(tags) {
       const tagList = tags.split(";").filter((item) => item.trim() !== "");
