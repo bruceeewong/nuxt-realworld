@@ -24,10 +24,36 @@
           <div class="articles-toggle">
             <ul class="nav nav-pills outline-active">
               <li class="nav-item">
-                <a class="nav-link active" href="">My Articles</a>
+                <nuxt-link
+                  class="nav-link"
+                  exact
+                  :class="{
+                    active: tab === 'mine',
+                  }"
+                  :to="{
+                    name: 'profile',
+                    query: {
+                      tab: 'mine',
+                    },
+                  }"
+                  >My Articles</nuxt-link
+                >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Favorited Articles</a>
+                <nuxt-link
+                  class="nav-link"
+                  exact
+                  :class="{
+                    active: tab === 'fav',
+                  }"
+                  :to="{
+                    name: 'profile',
+                    query: {
+                      tab: 'fav',
+                    },
+                  }"
+                  >Favorited Articles</nuxt-link
+                >
               </li>
             </ul>
           </div>
@@ -87,19 +113,30 @@ import { getArticles } from "@/api/article";
 export default {
   name: "UserProfile",
   middleware: "authenticated",
-  async asyncData({ params }) {
+  async asyncData({ params, query }) {
+    const { tab = "mine" } = query;
+
     const { data: profileRes } = await getUserProfile(params.username);
-    const { data: articlesRes } = await getArticles({
-      author: profileRes.profile.username,
-    });
+
+    const getArticleParams =
+      tab === "fav"
+        ? {
+            favorited: profileRes.profile.username,
+          }
+        : {
+            author: profileRes.profile.username,
+          };
+    const { data: articlesRes } = await getArticles(getArticleParams);
     return {
       profile: profileRes.profile,
       userArticle: {
         list: articlesRes.articles,
         count: articlesRes.articlesCount,
       },
+      tab,
     };
   },
+  watchQuery: ["tab"],
   methods: {
     async getUserArticles() {
       const { data } = await getArticles({ author: this.profile.username });
